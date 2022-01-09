@@ -3,7 +3,7 @@ pipeline{
     stages {
         stage('Checkout scm') {
             steps{
-                git branch: 'master', url: 'https://github.com/adamandika/praktek-jenkins.git'
+                git branch: 'master', url: 'https://github.com/adamandika/adam-mern-todo-app.git'
 
             }
         }   
@@ -19,8 +19,11 @@ pipeline{
         }
         stage('melakukan docker build'){
             steps{
-                sh("docker build -t adamandika/praktek-jenkins .")
+                sh("cat $HOME/password.txt | docker login -u adamandika --password-stdin")
+                sh("docker build -t adamandika/todo-app:$BUILD_NUMBER .")
+                sh("docker push adamandika/todo-app:$BUILD_NUMBER")
             }
         }
+        
     }
 }
